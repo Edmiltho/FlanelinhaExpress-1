@@ -1,62 +1,95 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package modelo.componentes;
-import modelo.operadores.Administrador;
-import modelo.operadores.Guarda;
-import modelo.operadores.PessoaJuridica;
-import java.util.ArrayList;
+
 import modelo.locais.Endereco;
-import modelo.operadores.Funcionario;
+import modelo.operadores.PessoaJuridica;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author Cacherow
+ */
+@Entity
+@Table(name = "estacionamento")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Estacionamento.findAll", query = "SELECT e FROM Estacionamento e")
+    , @NamedQuery(name = "Estacionamento.findByLatitude", query = "SELECT e FROM Estacionamento e WHERE e.latitude = :latitude")
+    , @NamedQuery(name = "Estacionamento.findByValorhora", query = "SELECT e FROM Estacionamento e WHERE e.valorhora = :valorhora")
+    , @NamedQuery(name = "Estacionamento.findByNome", query = "SELECT e FROM Estacionamento e WHERE e.nome = :nome")
+    , @NamedQuery(name = "Estacionamento.findById", query = "SELECT e FROM Estacionamento e WHERE e.id = :id")
+    , @NamedQuery(name = "Estacionamento.findByLongitude", query = "SELECT e FROM Estacionamento e WHERE e.longitude = :longitude")})
+public class Estacionamento implements Serializable {
 
-public class Estacionamento {
-    private int id;
+    private static final long serialVersionUID = 1L;
+    @Size(max = 15)
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "valorhora")
+    private BigInteger valorhora;
+    @Size(max = 100)
+    @Column(name = "nome")
     private String nome;
-    private Endereco endereco;
-    private double valorHora;
-    private ArrayList<Vaga> listaVagas;
-    private Funcionario funcionario;
-    private ArrayList<Administrador> listaAdministradores;
-    private LocalizacaoGPS gps;
-    private PessoaJuridica pessoaJuridica;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 15)
+    @Column(name = "longitude")
+    private String longitude;
+    @JoinColumn(name = "fk_endereco_id", referencedColumnName = "id")
+    @ManyToOne
+    private Endereco fkEnderecoId;
+    @JoinColumn(name = "fk_pessoa_juridica_id", referencedColumnName = "id")
+    @ManyToOne
+    private PessoaJuridica fkPessoaJuridicaId;
+    @OneToMany(mappedBy = "fkEstacionamentoId")
+    private Collection<Vaga> vagaCollection;
 
     public Estacionamento() {
     }
 
-    public Estacionamento(String nome, double valorHora) {
-        this.nome = nome;
-        this.valorHora = valorHora;
-    }
-
-    public Estacionamento(int id, String nome, Endereco endereco, double valorHora, ArrayList<Vaga> listaVagas, Guarda guarda, LocalizacaoGPS gps) {
-        this.id = id;
-        this.nome = nome;
-        this.endereco = endereco;
-        this.valorHora = valorHora;
-        this.listaVagas = listaVagas;
-        //this.funcionario = funcionario;
-        this.gps = gps;
-    }
-    
-    public Estacionamento(int id, String nome, Endereco endereco, double valorHora, Guarda guarda, ArrayList<Administrador> listaAdministradores, ArrayList<Vaga> listaVagas, PessoaJuridica pessoaJuridica) {
-        this.id = id;
-        this.nome = nome;
-        this.endereco = endereco;
-        this.valorHora = valorHora;
-        //this.funcionario = funcionario;
-        this.listaAdministradores = listaAdministradores;
-        this.listaVagas = listaVagas;
-        this.pessoaJuridica = pessoaJuridica;
-        
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Estacionamento(Integer id) {
         this.id = id;
     }
-    
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public BigInteger getValorhora() {
+        return valorhora;
+    }
+
+    public void setValorhora(BigInteger valorhora) {
+        this.valorhora = valorhora;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -65,61 +98,70 @@ public class Estacionamento {
         this.nome = nome;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public Integer getId() {
+        return id;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public double getValorHora() {
-        return valorHora;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setValorHora(double valorHora) {
-        this.valorHora = valorHora;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public Endereco getFkEnderecoId() {
+        return fkEnderecoId;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setFkEnderecoId(Endereco fkEnderecoId) {
+        this.fkEnderecoId = fkEnderecoId;
     }
 
-    public ArrayList<Administrador> getListaAdministradores() {
-        return listaAdministradores;
+    public PessoaJuridica getFkPessoaJuridicaId() {
+        return fkPessoaJuridicaId;
     }
 
-    public void setListaAdministradores(ArrayList<Administrador> listaAdministradores) {
-        this.listaAdministradores = listaAdministradores;
+    public void setFkPessoaJuridicaId(PessoaJuridica fkPessoaJuridicaId) {
+        this.fkPessoaJuridicaId = fkPessoaJuridicaId;
     }
 
-    public ArrayList<Vaga> getListaVagas() {
-        return listaVagas;
+    @XmlTransient
+    public Collection<Vaga> getVagaCollection() {
+        return vagaCollection;
     }
 
-    public void setListaVagas(ArrayList<Vaga> listaVagas) {
-        this.listaVagas = listaVagas;
+    public void setVagaCollection(Collection<Vaga> vagaCollection) {
+        this.vagaCollection = vagaCollection;
     }
 
-    public PessoaJuridica getPessoaJuridica() {
-        return pessoaJuridica;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
-    public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
-        this.pessoaJuridica = pessoaJuridica;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Estacionamento)) {
+            return false;
+        }
+        Estacionamento other = (Estacionamento) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
-    public LocalizacaoGPS getGps() {
-        return gps;
+    @Override
+    public String toString() {
+        return "ClassesEntidade.Estacionamento[ id=" + id + " ]";
     }
-
-    public void setGps(LocalizacaoGPS gps) {
-        this.gps = gps;
-    }
-    
     
 }

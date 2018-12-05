@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo.operadores;
+package ClassesEntidade;
 
-import modelo.operacoes.Cartao;
 import modelo.componentes.Veiculo;
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,44 +28,34 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Cacherow
  */
 @Entity
-@Table(name = "motorista")
+@Table(name = "modelo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Motorista.findAll", query = "SELECT m FROM Motorista m")
-    , @NamedQuery(name = "Motorista.findByCnh", query = "SELECT m FROM Motorista m WHERE m.cnh = :cnh")
-    , @NamedQuery(name = "Motorista.findById", query = "SELECT m FROM Motorista m WHERE m.id = :id")})
-public class Motorista implements Serializable {
+    @NamedQuery(name = "Modelo.findAll", query = "SELECT m FROM Modelo m")
+    , @NamedQuery(name = "Modelo.findById", query = "SELECT m FROM Modelo m WHERE m.id = :id")
+    , @NamedQuery(name = "Modelo.findByModelo", query = "SELECT m FROM Modelo m WHERE m.modelo = :modelo")})
+public class Modelo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Size(max = 11)
-    @Column(name = "cnh")
-    private String cnh;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
     private Integer id;
-    @OneToMany(mappedBy = "fkMotoristaId")
+    @Size(max = 50)
+    @Column(name = "modelo")
+    private String modelo;
+    @OneToMany(mappedBy = "fkModeloId")
     private Collection<Veiculo> veiculoCollection;
-    @OneToMany(mappedBy = "fkMotoristaId")
-    private Collection<Cartao> cartaoCollection;
-    @JoinColumn(name = "fk_pessoa_fisica_id", referencedColumnName = "id")
+    @JoinColumn(name = "fk_marca_id", referencedColumnName = "id")
     @ManyToOne
-    private PessoaFisica fkPessoaFisicaId;
+    private Marca fkMarcaId;
 
-    public Motorista() {
+    public Modelo() {
     }
 
-    public Motorista(Integer id) {
+    public Modelo(Integer id) {
         this.id = id;
-    }
-
-    public String getCnh() {
-        return cnh;
-    }
-
-    public void setCnh(String cnh) {
-        this.cnh = cnh;
     }
 
     public Integer getId() {
@@ -75,6 +64,14 @@ public class Motorista implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     @XmlTransient
@@ -86,21 +83,12 @@ public class Motorista implements Serializable {
         this.veiculoCollection = veiculoCollection;
     }
 
-    @XmlTransient
-    public Collection<Cartao> getCartaoCollection() {
-        return cartaoCollection;
+    public Marca getFkMarcaId() {
+        return fkMarcaId;
     }
 
-    public void setCartaoCollection(Collection<Cartao> cartaoCollection) {
-        this.cartaoCollection = cartaoCollection;
-    }
-
-    public PessoaFisica getFkPessoaFisicaId() {
-        return fkPessoaFisicaId;
-    }
-
-    public void setFkPessoaFisicaId(PessoaFisica fkPessoaFisicaId) {
-        this.fkPessoaFisicaId = fkPessoaFisicaId;
+    public void setFkMarcaId(Marca fkMarcaId) {
+        this.fkMarcaId = fkMarcaId;
     }
 
     @Override
@@ -113,10 +101,10 @@ public class Motorista implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Motorista)) {
+        if (!(object instanceof Modelo)) {
             return false;
         }
-        Motorista other = (Motorista) object;
+        Modelo other = (Modelo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -125,7 +113,7 @@ public class Motorista implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassesEntidade.Motorista[ id=" + id + " ]";
+        return "ClassesEntidade.Modelo[ id=" + id + " ]";
     }
     
 }
