@@ -1,6 +1,6 @@
 Flanelinha Express <br>
-Alunos: 
-Andreângelo Patuzzo
-Edmiltho dos Anjos
-Emanuel Rampinelli
+Alunos: <br>
+Andreângelo Patuzzo<br>
+Edmiltho dos Anjos<br>
+Emanuel Rampinelli<br>
 Caio Pupolin
